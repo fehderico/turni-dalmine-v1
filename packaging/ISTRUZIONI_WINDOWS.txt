@@ -1,0 +1,14 @@
+TURNI CENTRALE DI DALMINE - WINDOWS
+
+1. Estrarre completamente il file ZIP.
+2. Aprire la cartella estratta.
+3. Fare doppio clic su "AVVIA TURNI.exe".
+4. Attendere l'apertura automatica del browser.
+5. Caricare l'Excel delle risposte e premere "Genera calendario".
+
+Non spostare il solo file EXE fuori dalla cartella: i file nella cartella _internal sono necessari.
+
+Al primo avvio Windows potrebbe mostrare SmartScreen perché l'app non è firmata.
+In tal caso selezionare "Ulteriori informazioni" e poi "Esegui comunque".
+
+Per terminare il programma usare il pulsante "Chiudi applicazione" nella barra laterale.

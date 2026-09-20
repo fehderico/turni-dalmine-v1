@@ -1,0 +1,15 @@
+TURNI CENTRALE DI DALMINE - macOS
+
+1. Estrarre completamente il file ZIP.
+2. Fare doppio clic su "AVVIA TURNI.app".
+3. Attendere l'apertura automatica del browser.
+4. Caricare l'Excel delle risposte e premere "Genera calendario".
+
+Al primo avvio macOS potrebbe bloccare l'app perché non è firmata con un certificato Apple.
+In tal caso fare clic destro sull'app, scegliere "Apri" e confermare. Gli avvii successivi
+potranno essere effettuati con il normale doppio clic.
+
+Usare la versione Apple Silicon per Mac con chip M1, M2, M3, M4 o successivi.
+Usare la versione Intel per i Mac precedenti.
+
+Per terminare il programma usare il pulsante "Chiudi applicazione" nella barra laterale.

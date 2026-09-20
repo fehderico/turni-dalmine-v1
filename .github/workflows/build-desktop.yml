@@ -1,0 +1,90 @@
+name: Build applicazioni desktop
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "desktop-v*"
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements.txt pytest
+      - run: python -m pytest -q
+
+  windows:
+    needs: test
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements-build.txt
+      - run: pyinstaller --noconfirm --clean TurniDalmine.spec
+      - name: Prepara pacchetto Windows
+        shell: pwsh
+        run: |
+          Copy-Item "sample_data\Dati_test_UNICA_Ottobre_2026.xlsx" "dist\Turni Dalmine\DATI DI ESEMPIO.xlsx"
+          Copy-Item "packaging\ISTRUZIONI_WINDOWS.txt" "dist\Turni Dalmine\LEGGIMI.txt"
+          Compress-Archive -Path "dist\Turni Dalmine\*" -DestinationPath "Turni_Dalmine_Windows_64bit.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Turni-Dalmine-Windows-64bit
+          path: Turni_Dalmine_Windows_64bit.zip
+          if-no-files-found: error
+
+  mac-apple-silicon:
+    needs: test
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements-build.txt
+      - run: pyinstaller --noconfirm --clean TurniDalmine.spec
+      - name: Prepara pacchetto macOS Apple Silicon
+        run: |
+          mkdir -p release
+          cp -R "dist/AVVIA TURNI.app" release/
+          cp sample_data/Dati_test_UNICA_Ottobre_2026.xlsx "release/DATI DI ESEMPIO.xlsx"
+          cp packaging/ISTRUZIONI_MAC.txt release/LEGGIMI.txt
+          ditto -c -k --sequesterRsrc --keepParent release Turni_Dalmine_macOS_Apple_Silicon.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Turni-Dalmine-macOS-Apple-Silicon
+          path: Turni_Dalmine_macOS_Apple_Silicon.zip
+          if-no-files-found: error
+
+  mac-intel:
+    needs: test
+    runs-on: macos-15-intel
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -r requirements-build.txt
+      - run: pyinstaller --noconfirm --clean TurniDalmine.spec
+      - name: Prepara pacchetto macOS Intel
+        run: |
+          mkdir -p release
+          cp -R "dist/AVVIA TURNI.app" release/
+          cp sample_data/Dati_test_UNICA_Ottobre_2026.xlsx "release/DATI DI ESEMPIO.xlsx"
+          cp packaging/ISTRUZIONI_MAC.txt release/LEGGIMI.txt
+          ditto -c -k --sequesterRsrc --keepParent release Turni_Dalmine_macOS_Intel.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Turni-Dalmine-macOS-Intel
+          path: Turni_Dalmine_macOS_Intel.zip
+          if-no-files-found: error
