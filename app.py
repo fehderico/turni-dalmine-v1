@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import date, timedelta
 import hashlib
+import hmac
 import os
 import secrets
 
@@ -30,6 +31,33 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+
+def require_web_password() -> None:
+    if os.environ.get("TURNI_DESKTOP_MODE") == "1":
+        return
+
+    expected_password = str(st.secrets.get("APP_PASSWORD", "")).strip()
+    if not expected_password:
+        st.error("Accesso web non configurato. Contattare l'amministratore.")
+        st.stop()
+
+    if st.session_state.get("web_authenticated") is True:
+        return
+
+    st.title("Turni centrale di Dalmine")
+    st.caption("Inserisci la password ricevuta per accedere alla demo.")
+    supplied_password = st.text_input("Password", type="password")
+    if st.button("Accedi", type="primary", use_container_width=True):
+        if hmac.compare_digest(supplied_password, expected_password):
+            st.session_state["web_authenticated"] = True
+            st.rerun()
+        else:
+            st.error("Password non corretta.")
+    st.stop()
+
+
+require_web_password()
 
 
 def calendar_for_display(frame: pd.DataFrame) -> pd.DataFrame:
