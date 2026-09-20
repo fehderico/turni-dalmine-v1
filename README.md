@@ -71,6 +71,12 @@ L'utente estrae lo ZIP e apre l'app con un doppio clic. Il browser si apre autom
 
 Le istruzioni per pubblicazione web e compilazione desktop sono in `DEPLOYMENT.md`.
 
+## Accesso alla demo web
+
+La distribuzione web richiede il secret Streamlit `APP_PASSWORD`. All'apertura
+viene mostrata una schermata di accesso; la modalità desktop non richiede la
+password.
+
 ## Verifica automatica
 
 La cartella `tests` controlla le regole principali: disponibilità, scoperture, riposo di 11 ore, sovrapposizioni, priorità territoriali, riproducibilità dell'estrazione, ultima risposta e lettura dei giorni festivi infrasettimanali. Il workflow esegue i test prima di creare i pacchetti desktop.
